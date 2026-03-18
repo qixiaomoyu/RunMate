@@ -1,150 +1,62 @@
-# RunMate MVP · 启动指南
+# RunMate - AI个性化跑步计划助手
 
-## 你拿到的两个文件夹
+## 产品简介
+RunMate 是一款基于大语言模型的智能跑步助手微信小程序，提供：
+- AI 个性化训练计划生成
+- 实时 AI 教练对话
+- 跑步中 AI 激励陪跑
+- 跑后 AI 数据复盘
 
+## 技术架构
+- 前端：微信小程序原生开发
+- 后端：Python Flask
+- AI能力：智谱GLM大模型
+- 部署：Railway云平台
+
+## 项目结构
+- `/runmate_backend` - Python Flask 后端服务
+- `/runmate_miniprogram` - 微信小程序前端
+
+## 在线体验
+后端API地址：（部署后填写Railway地址）
+
+## 产品文档
+- 用户研究报告
+- 竞品分析报告
+- PRD文档
+- 业务流程图
 ```
-runmate_backend/     ← Python后端，用 PyCharm 打开
-  app.py             ← 主程序（4个AI接口）
-  requirements.txt   ← 依赖包列表
-  Procfile           ← Railway部署配置
 
-runmate_miniprogram/ ← 微信小程序，用微信开发者工具打开
-  app.js / app.json / app.wxss   ← 全局配置
-  pages/
-    index/   ← 首页
-    plan/    ← 计划生成
-    run/     ← 跑步中
-    coach/   ← AI教练对话
-    history/ ← 历史记录
-    review/  ← 跑后复盘
-```
+点 **Commit changes** 保存。
 
 ---
 
-## 第一步：启动后端（PyCharm）
+## 第二部分：部署后端到 Railway
 
-### 1. 打开项目
-用 PyCharm 打开 `runmate_backend` 文件夹
+Railway 是一个免费的云部署平台，可以让你的 Flask 后端 24 小时运行，面试官随时能访问。
 
-### 2. 填入你的 GLM API Key
-打开 `app.py`，找到第9行：
-```python
-GLM_API_KEY = os.environ.get("GLM_API_KEY", "你的完整GLM_API_KEY填在这里")
-```
-把引号里的文字替换成你的真实 Key，例如：
-```python
-GLM_API_KEY = os.environ.get("GLM_API_KEY", "9739xxxx.WX04xxxx")
-```
+**Step 1：注册 Railway**
 
-### 3. 安装依赖
-在 PyCharm 底部打开 Terminal，输入：
-```bash
-pip install -r requirements.txt
-```
-等待安装完成（大约1分钟）
+1. 打开 **railway.app**
+2. 点 **"Login"** → **用 GitHub 账号登录**（直接授权就行）
 
-### 4. 运行后端
-在 Terminal 输入：
-```bash
-python app.py
+**Step 2：准备部署文件**
+
+在你的 `runmate_backend` 文件夹里，确保有这几个文件：
+
+**文件 1：`requirements.txt`**（你已经有了）
 ```
-看到如下输出说明成功：
-```
-* Running on http://0.0.0.0:5000
+flask==3.0.0
+flask-cors==4.0.0
+zhipuai>=2.1.0
+gunicorn==21.2.0
 ```
 
-### 5. 测试后端是否正常
-打开浏览器访问 http://localhost:5000
-看到 `{"status": "RunMate Backend Running ✅"}` 说明后端正常运行
-
----
-
-## 第二步：启动小程序（微信开发者工具）
-
-### 1. 打开项目
-- 打开微信开发者工具
-- 点击「+」新建项目
-- 目录选择 `runmate_miniprogram` 文件夹
-- AppID 填入：`wx53602f9d3ff7ab39`
-- 点击「确定」
-
-### 2. 配置后端地址
-打开 `app.js`，第5行：
-```javascript
-baseUrl: 'http://localhost:5000',
+**文件 2：`Procfile`**（新建，告诉 Railway 怎么启动你的应用）
 ```
-本地测试不用改，保持这个地址即可。
+web: gunicorn app:app --bind 0.0.0.0:$PORT
+```
 
-### 3. 开启「不校验域名」
-工具栏点击「详情」→「本地设置」→ 勾选「不校验合法域名」
-（这样本地开发时才能访问 localhost）
-
-### 4. 预览效果
-点击微信开发者工具左上角「编译」按钮，右侧模拟器会显示小程序界面。
-
----
-
-## 第三步：测试核心功能
-
-后端和小程序都启动后，按以下顺序测试：
-
-**测试1：AI生成计划**
-- 点击底部「计划」Tab
-- 选择目标/水平/天数
-- 点击「生成我的专属计划」
-- ✅ 成功：3秒内出现计划内容和周日历
-
-**测试2：AI教练对话**
-- 点击底部「AI教练」Tab
-- 点击快捷问题「如何提升配速？」
-- ✅ 成功：AI返回个性化回复
-
-**测试3：跑步+复盘**
-- 点击底部「开跑」Tab
-- 点击「开始跑步」，等待数据开始跳动
-- 约10秒后点击「结束」
-- ✅ 成功：跳转复盘页，AI生成复盘报告
-
----
-
-## 常见报错处理
-
-| 报错内容 | 原因 | 解决方法 |
-|---------|------|---------|
-| `Module not found: zhipuai` | 依赖未安装 | 重新运行 `pip install -r requirements.txt` |
-| `Invalid API Key` | GLM Key 填错 | 检查 app.py 第9行的 Key 是否完整 |
-| `网络连接失败` | 后端未启动 | 确认 PyCharm 里 `python app.py` 正在运行 |
-| 小程序白屏 | 编译错误 | 看微信开发者工具底部「控制台」的红色报错 |
-| `request:fail` | 域名未配置 | 确认勾选了「不校验合法域名」 |
-
-遇到其他报错：把红色错误信息截图，发给 Claude 帮你看。
-
----
-
-## 第四步：部署到线上（Railway）
-
-本地测试没问题后，把后端部署到网上，这样手机真机也能用。
-
-1. 去 railway.app 注册账号（用 GitHub 登录）
-2. 新建项目 → Deploy from GitHub → 上传 `runmate_backend` 文件夹
-3. 在 Variables 里添加环境变量：
-   - Key: `GLM_API_KEY`
-   - Value: 你的完整 GLM Key
-4. 部署完成后会得到一个 URL，例如 `https://runmate-backend-xxxx.railway.app`
-5. 把这个 URL 填入小程序 `app.js` 第5行的 `baseUrl`
-6. 微信开发者工具里点「真机调试」，用手机扫码即可体验完整版
-
----
-
-## 面试演示路径（3分钟）
-
-1. 打开小程序，展示首页数据
-2. 进入「计划」Tab → 填写信息 → 点击生成 → 等待AI输出（**核心亮点**）
-3. 进入「AI教练」→ 问「我怎么提升配速？」→ 展示AI个性化回复
-4. 进入「开跑」→ 点开始 → 展示实时数据跳动 → 点结束 → 展示AI复盘
-
-**面试时说的话：**
-「这是我独立设计并开发的 RunMate MVP，前端是微信小程序，后端是 Python Flask，
-AI 能力接入了 GLM-4 大模型。核心功能包括：AI个性化训练计划生成、
-实时AI陪跑激励、以及基于跑步数据的AI智能复盘。
-整个产品从需求分析、竞品分析、PRD到原型落地，全程由我一人完成。」
+**文件 3：`runtime.txt`**（新建，指定 Python 版本）
+```
+python-3.11.0

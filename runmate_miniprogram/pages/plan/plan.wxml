@@ -1,0 +1,71 @@
+<!-- pages/plan/plan.wxml — 计划页 -->
+<view class="page">
+
+  <!-- 表单区 -->
+  <view class="section-title">生成个性化计划</view>
+  <view class="card">
+    <view class="form-item">
+      <text class="form-label">🎯 跑步目标</text>
+      <picker bindchange="onGoalChange" value="{{goalIndex}}" range="{{goalOptions}}">
+        <view class="picker-box">
+          <text>{{goalOptions[goalIndex]}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">🏃 当前水平</text>
+      <picker bindchange="onLevelChange" value="{{levelIndex}}" range="{{levelOptions}}">
+        <view class="picker-box">
+          <text>{{levelOptions[levelIndex]}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item" style="border:none">
+      <text class="form-label">📅 每周训练天数</text>
+      <picker bindchange="onDaysChange" value="{{daysIndex}}" range="{{daysOptions}}">
+        <view class="picker-box">
+          <text>{{daysOptions[daysIndex]}}</text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <button class="btn-primary" style="margin:0 24rpx;width:auto" bindtap="generatePlan" disabled="{{loading}}">
+    {{loading ? 'AI 正在生成计划...' : '✨ 生成我的专属计划'}}
+  </button>
+
+  <!-- 计划结果 -->
+  <block wx:if="{{planData}}">
+    <view class="section-title" style="margin-top:32rpx">你的8周训练计划</view>
+    <view class="card">
+      <view class="ai-tip">{{planData.summary}}</view>
+    </view>
+
+    <!-- 本周日历 -->
+    <view class="section-title">本周安排</view>
+    <view class="card">
+      <view class="week-grid">
+        <view class="day-item {{item.type === '休息' ? 'rest' : item.type === '长跑' ? 'long' : item.type === '节奏跑' ? 'tempo' : 'easy'}}"
+              wx:for="{{planData.weeks[0].days}}" wx:key="day">
+          <text class="day-name">{{item.day.slice(1)}}</text>
+          <text class="day-type">{{item.type === '休息' ? '休' : item.km + 'k'}}</text>
+        </view>
+      </view>
+      <view class="legend-row">
+        <view class="legend-item"><view class="legend-dot easy-dot"></view><text>慢跑</text></view>
+        <view class="legend-item"><view class="legend-dot tempo-dot"></view><text>节奏</text></view>
+        <view class="legend-item"><view class="legend-dot long-dot"></view><text>长跑</text></view>
+        <view class="legend-item"><view class="legend-dot rest-dot"></view><text>休息</text></view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 错误提示 -->
+  <view class="error-box" wx:if="{{errorMsg}}">
+    <text>⚠️ {{errorMsg}}</text>
+  </view>
+
+</view>

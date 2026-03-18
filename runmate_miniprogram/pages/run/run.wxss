@@ -1,0 +1,25 @@
+/* pages/run/run.wxss */
+.page { padding-bottom: 60rpx; background: #f7faf8; }
+.run-header { background: linear-gradient(135deg, #1D9E75, #085041); padding: 32rpx 30rpx; text-align: center; }
+.run-title { font-size: 30rpx; font-weight: 600; color: #fff; display: block; }
+.run-sub { font-size: 22rpx; color: rgba(255,255,255,0.8); margin-top: 6rpx; display: block; }
+
+.circle-wrap { display: flex; justify-content: center; padding: 40rpx 0 24rpx; }
+.run-circle { width: 280rpx; height: 280rpx; border-radius: 50%; border: 6rpx solid #1D9E75; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 0 16rpx #E1F5EE; }
+.run-circle.running { box-shadow: 0 0 0 16rpx #E1F5EE, 0 0 0 32rpx #c8f0e0; }
+.dist-num { font-size: 88rpx; font-weight: 700; color: #1a1a1a; line-height: 1; }
+.dist-unit { font-size: 26rpx; color: #888; margin-top: 8rpx; }
+
+.metrics-row { display: flex; gap: 16rpx; padding: 0 24rpx; }
+.metric { flex: 1; background: #fff; border-radius: 16rpx; padding: 24rpx 16rpx; text-align: center; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06); }
+.metric-val { font-size: 36rpx; font-weight: 700; color: #1a1a1a; display: block; }
+.metric-key { font-size: 20rpx; color: #999; margin-top: 6rpx; display: block; }
+
+.encourage-box { margin: 0 24rpx; background: #E1F5EE; border-radius: 12rpx; padding: 20rpx 24rpx; }
+.encourage-text { font-size: 26rpx; color: #085041; }
+
+.controls { display: flex; gap: 20rpx; padding: 32rpx 24rpx 0; }
+.btn-run { flex: 2; border-radius: 16rpx; padding: 28rpx; font-size: 32rpx; font-weight: 600; border: none; }
+.btn-start { background: #1D9E75; color: #fff; }
+.btn-pause { background: #FAEEDA; color: #854F0B; }
+.btn-end { flex: 1; background: #f5f5f3; color: #555; border-radius: 16rpx; padding: 28rpx; font-size: 28rpx; font-weight: 500; border: 1rpx solid #ddd; }

@@ -1,0 +1,17 @@
+/* app.wxss — 全局样式 */
+page { background: #f7faf8; font-family: -apple-system, 'PingFang SC', sans-serif; }
+
+.card { background: #fff; border-radius: 16rpx; padding: 28rpx; margin: 0 24rpx 20rpx; box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06); }
+.section-title { font-size: 22rpx; font-weight: 600; color: #999; text-transform: uppercase; letter-spacing: 1rpx; margin: 24rpx 24rpx 12rpx; }
+
+.btn-primary { background: #1D9E75; color: #fff; border-radius: 16rpx; padding: 24rpx; font-size: 30rpx; font-weight: 600; text-align: center; border: none; width: 100%; }
+.btn-primary:active { opacity: 0.85; }
+
+.badge { display: inline-block; padding: 6rpx 18rpx; border-radius: 30rpx; font-size: 20rpx; font-weight: 500; }
+.badge-green { background: #E1F5EE; color: #085041; }
+.badge-amber { background: #FAEEDA; color: #854F0B; }
+
+.ai-tip { background: #E1F5EE; border-left: 6rpx solid #1D9E75; border-radius: 0 12rpx 12rpx 0; padding: 20rpx 24rpx; font-size: 26rpx; color: #085041; line-height: 1.7; }
+
+.progress-track { height: 12rpx; background: #eee; border-radius: 6rpx; }
+.progress-fill  { height: 12rpx; background: linear-gradient(90deg, #1D9E75, #5DCAA5); border-radius: 6rpx; }

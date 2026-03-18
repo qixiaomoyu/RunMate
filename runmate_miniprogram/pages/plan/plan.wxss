@@ -1,0 +1,25 @@
+/* pages/plan/plan.wxss */
+.page { padding-bottom: 60rpx; }
+.form-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 0; border-bottom: 1rpx solid #f0f0f0; }
+.form-label { font-size: 28rpx; color: #333; font-weight: 500; }
+.picker-box { display: flex; align-items: center; gap: 8rpx; color: #1D9E75; font-size: 26rpx; }
+.picker-arrow { font-size: 36rpx; color: #ccc; }
+
+.week-grid { display: flex; gap: 10rpx; margin-bottom: 20rpx; }
+.day-item { flex: 1; border-radius: 50%; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.day-name { font-size: 18rpx; color: inherit; }
+.day-type { font-size: 16rpx; color: inherit; margin-top: 2rpx; }
+.easy  { background: #E1F5EE; color: #085041; }
+.tempo { background: #FAEEDA; color: #854F0B; }
+.long  { background: #FCEBEB; color: #A32D2D; }
+.rest  { background: #f0f0f0; color: #aaa; }
+
+.legend-row { display: flex; gap: 24rpx; }
+.legend-item { display: flex; align-items: center; gap: 8rpx; font-size: 20rpx; color: #888; }
+.legend-dot { width: 16rpx; height: 16rpx; border-radius: 50%; }
+.easy-dot  { background: #1D9E75; }
+.tempo-dot { background: #EF9F27; }
+.long-dot  { background: #E24B4A; }
+.rest-dot  { background: #ccc; }
+
+.error-box { margin: 20rpx 24rpx; background: #FCEBEB; border-radius: 12rpx; padding: 20rpx; font-size: 26rpx; color: #A32D2D; }

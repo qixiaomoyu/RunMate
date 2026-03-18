@@ -1,0 +1,49 @@
+<!-- pages/review/review.wxml — 跑后复盘页 -->
+<view class="page">
+  <view class="review-header">
+    <text class="done-emoji">🎉</text>
+    <text class="done-title">跑步完成！</text>
+    <text class="done-sub">太棒了，又完成一次训练</text>
+  </view>
+
+  <!-- 数据汇总 -->
+  <view class="stats-grid card">
+    <view class="stat-item">
+      <text class="stat-val">{{runData.distance}}</text>
+      <text class="stat-key">公里</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-val">{{runData.duration}}</text>
+      <text class="stat-key">用时</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-val">{{runData.avg_pace}}</text>
+      <text class="stat-key">均配速</text>
+    </view>
+  </view>
+
+  <!-- AI复盘 -->
+  <view class="section-title">AI 教练复盘</view>
+  <view class="card">
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <text class="loading-text">AI 正在分析你的跑步数据...</text>
+    </view>
+    <view wx:else>
+      <view class="ai-tip" style="white-space:pre-wrap">{{reviewText}}</view>
+    </view>
+  </view>
+
+  <!-- 明日预告 -->
+  <view class="section-title">明日任务预告</view>
+  <view class="card">
+    <view class="next-task">
+      <text class="next-icon">📅</text>
+      <view>
+        <text class="next-title">节奏跑 6km</text>
+        <text class="next-sub">目标配速 5'50" · 预计40分钟</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="btn-primary" style="margin:24rpx;width:auto" bindtap="goHome">返回首页</button>
+</view>

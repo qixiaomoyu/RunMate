@@ -1,0 +1,19 @@
+/* pages/review/review.wxss */
+.page { padding-bottom: 60rpx; }
+.review-header { background: linear-gradient(135deg, #1D9E75, #085041); padding: 48rpx 30rpx; text-align: center; }
+.done-emoji { font-size: 80rpx; display: block; }
+.done-title { font-size: 44rpx; font-weight: 700; color: #fff; display: block; margin-top: 12rpx; }
+.done-sub { font-size: 24rpx; color: rgba(255,255,255,0.85); margin-top: 8rpx; display: block; }
+
+.stats-grid { display: flex; justify-content: space-around; padding: 32rpx 20rpx !important; }
+.stat-item { text-align: center; }
+.stat-val { font-size: 48rpx; font-weight: 700; color: #1D9E75; display: block; }
+.stat-key { font-size: 22rpx; color: #999; margin-top: 6rpx; display: block; }
+
+.loading-wrap { padding: 20rpx 0; text-align: center; }
+.loading-text { font-size: 26rpx; color: #888; }
+
+.next-task { display: flex; align-items: center; gap: 20rpx; }
+.next-icon { font-size: 48rpx; }
+.next-title { font-size: 30rpx; font-weight: 600; color: #1a1a1a; display: block; }
+.next-sub { font-size: 24rpx; color: #888; margin-top: 6rpx; display: block; }

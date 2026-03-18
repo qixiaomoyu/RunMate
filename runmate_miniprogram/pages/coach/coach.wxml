@@ -1,0 +1,41 @@
+<!-- pages/coach/coach.wxml — AI教练对话页 -->
+<view class="page">
+  <!-- 消息列表 -->
+  <scroll-view class="chat-area" scroll-y scroll-into-view="{{scrollId}}" scroll-with-animation>
+    <view wx:for="{{messages}}" wx:key="id" id="msg{{item.id}}">
+      <!-- AI消息 -->
+      <view class="msg-row ai-row" wx:if="{{item.role === 'ai'}}">
+        <view class="avatar ai-avatar">🤖</view>
+        <view class="bubble ai-bubble">
+          <text class="ai-label">RunMate 教练</text>
+          <text class="bubble-text">{{item.content}}</text>
+        </view>
+      </view>
+      <!-- 用户消息 -->
+      <view class="msg-row user-row" wx:if="{{item.role === 'user'}}">
+        <view class="bubble user-bubble">
+          <text class="bubble-text">{{item.content}}</text>
+        </view>
+      </view>
+      <!-- loading -->
+      <view class="msg-row ai-row" wx:if="{{item.role === 'loading'}}">
+        <view class="avatar ai-avatar">🤖</view>
+        <view class="bubble ai-bubble loading-bubble">
+          <text>教练正在思考</text><text class="dot-ani">...</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 快捷问题 -->
+  <scroll-view class="chips-row" scroll-x>
+    <view class="chip" wx:for="{{quickQuestions}}" wx:key="*this" bindtap="quickAsk" data-q="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 输入框 -->
+  <view class="input-bar">
+    <input class="chat-input" value="{{inputText}}" bindinput="onInput"
+           placeholder="问 AI 教练任何跑步问题…" confirm-type="send" bindconfirm="sendMessage"/>
+    <view class="send-btn {{inputText ? '' : 'disabled'}}" bindtap="sendMessage">发送</view>
+  </view>
+</view>

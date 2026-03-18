@@ -1,0 +1,27 @@
+<!-- pages/history/history.wxml -->
+<view class="page">
+  <view class="streak-card">
+    <view class="streak-left">
+      <text class="streak-num">12</text>
+      <text class="streak-label">连续打卡天数 🔥</text>
+    </view>
+    <view class="streak-right">
+      <text class="streak-month">本月 28.4km</text>
+      <text class="streak-cal">消耗 1,680 千卡</text>
+    </view>
+  </view>
+
+  <view class="section-title">最近记录</view>
+  <view wx:for="{{records}}" wx:key="id" class="card record-item">
+    <view class="record-icon">⚡</view>
+    <view class="record-info">
+      <text class="record-title">{{item.type}}</text>
+      <text class="record-sub">{{item.date}} · 配速 {{item.pace}} · {{item.duration}}</text>
+      <view wx:if="{{item.isBest}}" class="badge badge-amber" style="margin-top:8rpx;display:inline-block">🏆 个人最佳配速</view>
+    </view>
+    <view class="record-dist">
+      <text class="dist-num">{{item.km}}</text>
+      <text class="dist-unit">km</text>
+    </view>
+  </view>
+</view>

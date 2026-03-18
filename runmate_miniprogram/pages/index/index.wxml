@@ -1,0 +1,66 @@
+<!-- pages/index/index.wxml — 首页 -->
+<view class="page">
+
+  <!-- 顶部Header -->
+  <view class="header">
+    <view class="header-left">
+      <text class="header-title">RunMate 🏃</text>
+      <text class="header-sub">第 {{streak}} 天 · 继续加油！</text>
+    </view>
+    <view class="header-right">
+      <text class="header-date">{{today}}</text>
+    </view>
+  </view>
+
+  <!-- 三个数据卡 -->
+  <view class="stats-row">
+    <view class="stat-card">
+      <text class="stat-num">{{monthly_km}}</text>
+      <text class="stat-label">本月公里</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{best_pace}}</text>
+      <text class="stat-label">最佳配速</text>
+    </view>
+    <view class="stat-card">
+      <text class="stat-num">{{streak}}</text>
+      <text class="stat-label">连续打卡</text>
+    </view>
+  </view>
+
+  <!-- 今日任务卡 -->
+  <view class="section-title">今日任务</view>
+  <view class="card task-card" bindtap="goRun">
+    <view class="task-row">
+      <view class="task-icon">⚡</view>
+      <view class="task-info">
+        <text class="task-title">{{todayTask.type}} {{todayTask.km}}km</text>
+        <text class="task-sub">目标配速 {{todayTask.pace}} · {{todayTask.duration}}</text>
+        <view class="badge-row">
+          <text class="badge badge-green">{{todayTask.tag}}</text>
+        </view>
+      </view>
+      <text class="task-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- AI 教练提示 -->
+  <view class="section-title">AI 教练提示</view>
+  <view class="card">
+    <view class="ai-tip">{{aiTip}}</view>
+  </view>
+
+  <!-- 本周进度 -->
+  <view class="section-title">本周进度</view>
+  <view class="card">
+    <view class="progress-header">
+      <text class="progress-text">已完成 {{weekDone}} / {{weekTotal}} 次训练</text>
+      <text class="progress-pct">{{weekPct}}%</text>
+    </view>
+    <view class="progress-track">
+      <view class="progress-fill" style="width:{{weekPct}}%"></view>
+    </view>
+    <text class="progress-hint">再完成 {{weekLeft}} 次即可达成本周目标 🎯</text>
+  </view>
+
+</view>

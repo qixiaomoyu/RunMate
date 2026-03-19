@@ -72,7 +72,9 @@ def generate_plan():
     except json.JSONDecodeError:
         return jsonify({"success": True, "data": {"summary": result[:200], "weeks": []}})
     except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+        import traceback
+        traceback.print_exc()
+        return jsonify({"success": False, "error": str(e), "detail": traceback.format_exc()}), 500
 
 
 # ───────────────────────────────────────────────

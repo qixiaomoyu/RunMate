@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from zhipuai import ZhipuAI
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)  # 允许小程序跨域请求
@@ -61,12 +62,11 @@ def generate_plan():
             model="glm-4-flash",  # 免费模型，速度快
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=8000,
+            max_tokens=4096,
         )
         result = response.choices[0].message.content
         # 清理可能的markdown代码块标记
         result = result.replace("```json", "").replace("```", "").strip()
-        import json
         plan_data = json.loads(result)
         return jsonify({"success": True, "data": plan_data})
     except json.JSONDecodeError:

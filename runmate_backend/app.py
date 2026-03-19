@@ -61,7 +61,7 @@ def generate_plan():
             model="glm-4-flash",  # 免费模型，速度快
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=3000,
+            max_tokens=8000,
         )
         result = response.choices[0].message.content
         # 清理可能的markdown代码块标记
@@ -69,6 +69,8 @@ def generate_plan():
         import json
         plan_data = json.loads(result)
         return jsonify({"success": True, "data": plan_data})
+    except json.JSONDecodeError:
+        return jsonify({"success": True, "data": {"summary": result[:200], "weeks": []}})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
 

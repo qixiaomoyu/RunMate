@@ -1,71 +1,150 @@
-<!-- pages/plan/plan.wxml — 计划页 -->
-<view class="page">
+<!--pages/plan/plan.wxml-->
 
-  <!-- 表单区 -->
-  <view class="section-title">生成个性化计划</view>
-  <view class="card">
-    <view class="form-item">
-      <text class="form-label">🎯 跑步目标</text>
-      <picker bindchange="onGoalChange" value="{{goalIndex}}" range="{{goalOptions}}">
-        <view class="picker-box">
-          <text>{{goalOptions[goalIndex]}}</text>
-          <text class="picker-arrow">›</text>
-        </view>
-      </picker>
+<!-- ========== 加载中遮罩 ========== -->
+<view class="loading-overlay" wx:if="{{isLoading}}">
+  <view class="loading-card">
+    <!-- 跑步动画 -->
+    <view class="running-animation">
+      <text class="runner-emoji">🏃‍♂️</text>
+      <view class="running-track">
+        <view class="track-progress" style="width: {{loadingProgress}}%"></view>
+      </view>
+      <text class="finish-flag">🏁</text>
     </view>
-    <view class="form-item">
-      <text class="form-label">🏃 当前水平</text>
-      <picker bindchange="onLevelChange" value="{{levelIndex}}" range="{{levelOptions}}">
-        <view class="picker-box">
-          <text>{{levelOptions[levelIndex]}}</text>
-          <text class="picker-arrow">›</text>
-        </view>
-      </picker>
+
+    <!-- 进度 -->
+    <text class="loading-percent">{{loadingProgress}}%</text>
+    <text class="loading-stage">{{loadingStage}}</text>
+
+    <!-- 跑步小知识 -->
+    <view class="tip-card">
+      <text class="tip-label">💡 跑步小知识</text>
+      <text class="tip-content">{{loadingTip}}</text>
     </view>
-    <view class="form-item" style="border:none">
-      <text class="form-label">📅 每周训练天数</text>
-      <picker bindchange="onDaysChange" value="{{daysIndex}}" range="{{daysOptions}}">
-        <view class="picker-box">
-          <text>{{daysOptions[daysIndex]}}</text>
-          <text class="picker-arrow">›</text>
-        </view>
-      </picker>
+  </view>
+</view>
+
+<!-- ========== 未生成计划：选项页 ========== -->
+<view class="container" wx:if="{{!hasPlan && !isLoading}}">
+  <view class="header-text">生成个性化计划</view>
+
+  <view class="option-card">
+    <picker bindchange="onGoalChange" value="{{goalIndex}}" range="{{goalOptions}}">
+      <view class="option-row">
+        <text class="option-icon">🎯</text>
+        <text class="option-label">跑步目标</text>
+        <text class="option-value">{{goalOptions[goalIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onLevelChange" value="{{levelIndex}}" range="{{levelOptions}}">
+      <view class="option-row">
+        <text class="option-icon">🏃‍♂️</text>
+        <text class="option-label">当前水平</text>
+        <text class="option-value">{{levelOptions[levelIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onDaysChange" value="{{daysIndex}}" range="{{daysOptions}}">
+      <view class="option-row">
+        <text class="option-icon">📅</text>
+        <text class="option-label">每周训练天数</text>
+        <text class="option-value">{{daysOptions[daysIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onGenderChange" value="{{genderIndex}}" range="{{genderOptions}}">
+      <view class="option-row">
+        <text class="option-icon">👤</text>
+        <text class="option-label">性别</text>
+        <text class="option-value">{{genderOptions[genderIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onHeightChange" value="{{heightIndex}}" range="{{heightOptions}}">
+      <view class="option-row">
+        <text class="option-icon">📏</text>
+        <text class="option-label">身高</text>
+        <text class="option-value">{{heightOptions[heightIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onWeightChange" value="{{weightIndex}}" range="{{weightOptions}}">
+      <view class="option-row">
+        <text class="option-icon">⚖️</text>
+        <text class="option-label">体重</text>
+        <text class="option-value">{{weightOptions[weightIndex]}} ›</text>
+      </view>
+    </picker>
+
+    <picker bindchange="onHabitChange" value="{{habitIndex}}" range="{{habitOptions}}">
+      <view class="option-row">
+        <text class="option-icon">💪</text>
+        <text class="option-label">运动习惯</text>
+        <text class="option-value">{{habitOptions[habitIndex]}} ›</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="generate-btn" bindtap="generatePlan">
+    <text>✨ 生成我的专属计划</text>
+  </view>
+</view>
+
+<!-- ========== 已生成计划：展示页 ========== -->
+<view class="container" wx:if="{{hasPlan}}">
+  
+  <!-- 计划概览 -->
+  <view class="plan-header">
+    <text class="plan-title">🎯 你的专属训练计划</text>
+    <text class="plan-summary">{{planSummary}}</text>
+  </view>
+
+  <!-- 周数切换 -->
+  <view class="week-nav">
+    <view class="nav-btn {{currentWeek <= 1 ? 'disabled' : ''}}" bindtap="prevWeek">
+      <text>‹ 上一周</text>
+    </view>
+    <view class="week-indicator">
+      <text class="week-current">第 {{currentWeek}} 周</text>
+      <text class="week-total">/ 共 {{totalWeeks}} 周</text>
+    </view>
+    <view class="nav-btn {{currentWeek >= totalWeeks ? 'disabled' : ''}}" bindtap="nextWeek">
+      <text>下一周 ›</text>
     </view>
   </view>
 
-  <button class="btn-primary" style="margin:0 24rpx;width:auto" bindtap="generatePlan" disabled="{{loading}}">
-    {{loading ? 'AI 正在生成计划...' : '✨ 生成我的专属计划'}}
-  </button>
+  <!-- 本周主题 -->
+  <view class="week-theme" wx:if="{{weekData.theme}}">
+    <text class="theme-text">📋 {{weekData.theme}}</text>
+  </view>
 
-  <!-- 计划结果 -->
-  <block wx:if="{{planData}}">
-    <view class="section-title" style="margin-top:32rpx">你的8周训练计划</view>
-    <view class="card">
-      <view class="ai-tip">{{planData.summary}}</view>
-    </view>
+  <!-- 加载更多周时的loading -->
+  <view class="loading-more" wx:if="{{isLoadingMore}}">
+    <text class="loading-more-text">AI教练正在编排第{{currentWeek}}周计划...</text>
+  </view>
 
-    <!-- 本周日历 -->
-    <view class="section-title">本周安排</view>
-    <view class="card">
-      <view class="week-grid">
-        <view class="day-item {{item.type === '休息' ? 'rest' : item.type === '长跑' ? 'long' : item.type === '节奏跑' ? 'tempo' : 'easy'}}"
-              wx:for="{{planData.weeks[0].days}}" wx:key="day">
-          <text class="day-name">{{item.day.slice(1)}}</text>
-          <text class="day-type">{{item.type === '休息' ? '休' : item.km + 'k'}}</text>
-        </view>
+  <!-- 每日训练卡片 -->
+  <view class="day-list" wx:if="{{!isLoadingMore && weekData.days}}">
+    <view class="day-card {{item.type == '休息' ? 'rest' : item.type == '长跑' ? 'long-run' : item.type == '间歇跑' ? 'interval' : 'easy-run'}}" 
+          wx:for="{{weekData.days}}" wx:key="day">
+      <view class="day-header">
+        <text class="day-name">{{item.day}}</text>
+        <text class="day-type">{{item.type}}</text>
       </view>
-      <view class="legend-row">
-        <view class="legend-item"><view class="legend-dot easy-dot"></view><text>慢跑</text></view>
-        <view class="legend-item"><view class="legend-dot tempo-dot"></view><text>节奏</text></view>
-        <view class="legend-item"><view class="legend-dot long-dot"></view><text>长跑</text></view>
-        <view class="legend-item"><view class="legend-dot rest-dot"></view><text>休息</text></view>
+      <view class="day-detail" wx:if="{{item.km > 0}}">
+        <text class="day-km">{{item.km}}km</text>
+        <text class="day-pace">配速 {{item.pace}}</text>
       </view>
+      <text class="day-tip">{{item.tip}}</text>
     </view>
-  </block>
+  </view>
 
-  <!-- 错误提示 -->
-  <view class="error-box" wx:if="{{errorMsg}}">
-    <text>⚠️ {{errorMsg}}</text>
+  <!-- 底部操作 -->
+  <view class="bottom-actions">
+    <view class="regenerate-btn" bindtap="regenerate">
+      <text>🔄 重新生成计划</text>
+    </view>
   </view>
 
 </view>

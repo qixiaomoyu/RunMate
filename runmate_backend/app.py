@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from zhipuai import ZhipuAI
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)  # 允许小程序跨域请求
@@ -13,7 +14,7 @@ client = ZhipuAI(api_key=GLM_API_KEY)
 
 
 # ───────────────────────────────────────────────
-# 接口1：生成个性化训练计划
+# 接口1：生成个性化训练计划（按周生成，提速）
 # ───────────────────────────────────────────────
 @app.route("/generate-plan", methods=["POST"])
 def generate_plan():
@@ -22,6 +23,21 @@ def generate_plan():
     level = data.get("level", "新手")
     days = data.get("days", "3天")
     injury = data.get("injury", "无")
+    gender = data.get("gender", "男")
+    height = data.get("height", "170cm")
+    weight = data.get("weight", "65kg")
+    habit = data.get("habit", "几乎不运动")
+    week = data.get("week", 1)  # 第几周，默认第1周
+
+    # 根据周数给AI不同的指导
+    if week == 1:
+        week_hint = "这是第1周，从基础开始，强度较低。"
+    elif week < 7:
+        week_hint = f"这是第{week}周，训练量相比上周递增约10%。"
+    elif week == 7:
+        week_hint = "这是第7周减量恢复周，强度降低到第4周水平。"
+    else:
+        week_hint = "这是第8周最终冲刺周，为目标做最后准备。"
 
     prompt = f"""你是一名拥有10年经验的专业跑步教练。
 
@@ -30,46 +46,48 @@ def generate_plan():
 - 当前水平：{level}
 - 每周可训练天数：{days}
 - 伤病情况：{injury}
+- 性别：{gender}
+- 身高：{height}
+- 体重：{weight}
+- 运动习惯：{habit}
 
-请为用户生成一份8周个性化训练计划。要求：
-1. 用JSON格式输出，结构如下：
+请生成8周训练计划中【第{week}周】的训练安排。{week_hint}
+
+严格要求：
+1. 只输出JSON，格式如下：
 {{
-  "summary": "计划总体说明（2句话）",
-  "weeks": [
-    {{
-      "week": 1,
-      "theme": "本周主题",
-      "days": [
-        {{"day": "周一", "type": "休息", "km": 0, "pace": "-", "tip": "充分休息"}},
-        {{"day": "周二", "type": "慢跑", "km": 4, "pace": "6'30\"", "tip": "保持轻松节奏"}},
-        {{"day": "周三", "type": "休息", "km": 0, "pace": "-", "tip": "拉伸放松"}},
-        {{"day": "周四", "type": "慢跑", "km": 5, "pace": "6'20\"", "tip": "注意呼吸节奏"}},
-        {{"day": "周五", "type": "休息", "km": 0, "pace": "-", "tip": "休息恢复"}},
-        {{"day": "周六", "type": "长跑", "km": 7, "pace": "6'45\"", "tip": "全程保持对话配速"}},
-        {{"day": "周日", "type": "休息", "km": 0, "pace": "-", "tip": "主动恢复，可散步"}}
-      ]
-    }}
+  "week": {week},
+  "theme": "本周主题（4-8字）",
+  "summary": "本周训练说明（1句话）",
+  "days": [
+    {{"day": "周一", "type": "休息/慢跑/间歇跑/长跑/恢复跑", "km": 0, "pace": "-", "tip": "一句话建议"}},
+    {{"day": "周二", "type": "慢跑", "km": 4, "pace": "6'30\\"", "tip": "保持轻松节奏"}},
+    {{"day": "周三", "type": "休息", "km": 0, "pace": "-", "tip": "拉伸放松"}},
+    {{"day": "周四", "type": "慢跑", "km": 5, "pace": "6'20\\"", "tip": "注意呼吸节奏"}},
+    {{"day": "周五", "type": "休息", "km": 0, "pace": "-", "tip": "休息恢复"}},
+    {{"day": "周六", "type": "长跑", "km": 7, "pace": "6'45\\"", "tip": "全程保持对话配速"}},
+    {{"day": "周日", "type": "休息", "km": 0, "pace": "-", "tip": "主动恢复"}}
   ]
 }}
-2. 只输出JSON，不要任何解释文字
-3. 训练量每周递增不超过10%
-4. 第7周为减量恢复周
-5. 根据用户水平合理设置配速和距离"""
+2. 只输出JSON，不要任何解释文字、不要markdown标记
+3. 必须包含7天，根据用户水平合理设置配速和距离"""
 
     try:
         response = client.chat.completions.create(
-            model="glm-4-flash",  # 免费模型，速度快
+            model="glm-4-flash",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
-            max_tokens=3000,
+            max_tokens=1000,
         )
         result = response.choices[0].message.content
-        # 清理可能的markdown代码块标记
         result = result.replace("```json", "").replace("```", "").strip()
-        import json
         plan_data = json.loads(result)
         return jsonify({"success": True, "data": plan_data})
+    except json.JSONDecodeError:
+        return jsonify({"success": True, "data": {"week": week, "theme": "本周训练", "summary": result[:100], "days": []}})
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         return jsonify({"success": False, "error": str(e)}), 500
 
 

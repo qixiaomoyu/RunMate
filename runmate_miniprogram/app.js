@@ -3,7 +3,7 @@ App({
   globalData: {
     // ⚠️ 部署后端到Railway后，把这里换成你的Railway URL
     // 本地测试时用 http://localhost:5000
-    baseUrl: 'http://127.0.0.1:5000',
+    baseUrl: 'https://runmate-production-8ee5.up.railway.app',
 
     // 用户数据（模拟，正式版接数据库）
     userProfile: {

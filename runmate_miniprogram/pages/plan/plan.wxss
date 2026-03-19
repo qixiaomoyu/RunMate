@@ -1,25 +1,356 @@
 /* pages/plan/plan.wxss */
-.page { padding-bottom: 60rpx; }
-.form-item { display: flex; justify-content: space-between; align-items: center; padding: 24rpx 0; border-bottom: 1rpx solid #f0f0f0; }
-.form-label { font-size: 28rpx; color: #333; font-weight: 500; }
-.picker-box { display: flex; align-items: center; gap: 8rpx; color: #1D9E75; font-size: 26rpx; }
-.picker-arrow { font-size: 36rpx; color: #ccc; }
 
-.week-grid { display: flex; gap: 10rpx; margin-bottom: 20rpx; }
-.day-item { flex: 1; border-radius: 50%; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.day-name { font-size: 18rpx; color: inherit; }
-.day-type { font-size: 16rpx; color: inherit; margin-top: 2rpx; }
-.easy  { background: #E1F5EE; color: #085041; }
-.tempo { background: #FAEEDA; color: #854F0B; }
-.long  { background: #FCEBEB; color: #A32D2D; }
-.rest  { background: #f0f0f0; color: #aaa; }
+.container {
+  padding: 20rpx 30rpx;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
 
-.legend-row { display: flex; gap: 24rpx; }
-.legend-item { display: flex; align-items: center; gap: 8rpx; font-size: 20rpx; color: #888; }
-.legend-dot { width: 16rpx; height: 16rpx; border-radius: 50%; }
-.easy-dot  { background: #1D9E75; }
-.tempo-dot { background: #EF9F27; }
-.long-dot  { background: #E24B4A; }
-.rest-dot  { background: #ccc; }
+/* ========== 头部 ========== */
+.header-text {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30rpx;
+}
 
-.error-box { margin: 20rpx 24rpx; background: #FCEBEB; border-radius: 12rpx; padding: 20rpx; font-size: 26rpx; color: #A32D2D; }
+/* ========== 选项卡片 ========== */
+.option-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 10rpx 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.option-row:last-child {
+  border-bottom: none;
+}
+
+.option-icon {
+  font-size: 36rpx;
+  margin-right: 16rpx;
+}
+
+.option-label {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.option-value {
+  font-size: 28rpx;
+  color: #1D9E75;
+  font-weight: 500;
+}
+
+/* ========== 生成按钮 ========== */
+.generate-btn {
+  background: linear-gradient(135deg, #1D9E75, #16B87A);
+  color: #fff;
+  text-align: center;
+  padding: 28rpx 0;
+  border-radius: 50rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+  box-shadow: 0 8rpx 24rpx rgba(29, 158, 117, 0.3);
+}
+
+.generate-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* ========== 加载遮罩 ========== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loading-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 50rpx 40rpx;
+  width: 80%;
+  text-align: center;
+  box-shadow: 0 10rpx 40rpx rgba(0,0,0,0.15);
+}
+
+/* 跑步动画 */
+.running-animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30rpx;
+  padding: 0 20rpx;
+}
+
+.runner-emoji {
+  font-size: 48rpx;
+  animation: bounce 0.6s infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10rpx); }
+}
+
+.running-track {
+  flex: 1;
+  height: 10rpx;
+  background: #e8f5e9;
+  border-radius: 5rpx;
+  margin: 0 16rpx;
+  overflow: hidden;
+}
+
+.track-progress {
+  height: 100%;
+  background: linear-gradient(90deg, #1D9E75, #16B87A);
+  border-radius: 5rpx;
+  transition: width 0.5s ease;
+}
+
+.finish-flag {
+  font-size: 36rpx;
+}
+
+.loading-percent {
+  display: block;
+  font-size: 52rpx;
+  font-weight: bold;
+  color: #1D9E75;
+  margin-bottom: 10rpx;
+}
+
+.loading-stage {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 36rpx;
+}
+
+/* 跑步小知识卡片 */
+.tip-card {
+  background: #f0faf5;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  text-align: left;
+}
+
+.tip-label {
+  display: block;
+  font-size: 24rpx;
+  color: #1D9E75;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.tip-content {
+  display: block;
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ========== 计划展示 ========== */
+.plan-header {
+  background: linear-gradient(135deg, #1D9E75, #16B87A);
+  border-radius: 20rpx;
+  padding: 36rpx;
+  margin-bottom: 24rpx;
+  color: #fff;
+}
+
+.plan-title {
+  display: block;
+  font-size: 34rpx;
+  font-weight: bold;
+  margin-bottom: 12rpx;
+}
+
+.plan-summary {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* 周数导航 */
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.nav-btn {
+  font-size: 28rpx;
+  color: #1D9E75;
+  font-weight: 500;
+  padding: 8rpx 16rpx;
+}
+
+.nav-btn.disabled {
+  color: #ccc;
+}
+
+.week-indicator {
+  text-align: center;
+}
+
+.week-current {
+  font-size: 34rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.week-total {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 6rpx;
+}
+
+/* 本周主题 */
+.week-theme {
+  background: #fff;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.06);
+}
+
+.theme-text {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 加载更多 */
+.loading-more {
+  text-align: center;
+  padding: 60rpx 0;
+}
+
+.loading-more-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* ========== 每日训练卡片 ========== */
+.day-list {
+  margin-bottom: 30rpx;
+}
+
+.day-card {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 16rpx;
+  border-left: 8rpx solid #e0e0e0;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.day-card.rest {
+  border-left-color: #e0e0e0;
+  opacity: 0.75;
+}
+
+.day-card.easy-run {
+  border-left-color: #4CAF50;
+}
+
+.day-card.long-run {
+  border-left-color: #FF9800;
+}
+
+.day-card.interval {
+  border-left-color: #F44336;
+}
+
+.day-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.day-name {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.day-type {
+  font-size: 24rpx;
+  color: #fff;
+  background: #1D9E75;
+  border-radius: 20rpx;
+  padding: 4rpx 20rpx;
+}
+
+.day-card.rest .day-type {
+  background: #bbb;
+}
+
+.day-card.long-run .day-type {
+  background: #FF9800;
+}
+
+.day-card.interval .day-type {
+  background: #F44336;
+}
+
+.day-detail {
+  display: flex;
+  gap: 30rpx;
+  margin-bottom: 10rpx;
+}
+
+.day-km {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1D9E75;
+}
+
+.day-pace {
+  font-size: 26rpx;
+  color: #888;
+  line-height: 44rpx;
+}
+
+.day-tip {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* ========== 底部操作 ========== */
+.bottom-actions {
+  padding-bottom: 40rpx;
+}
+
+.regenerate-btn {
+  text-align: center;
+  padding: 22rpx 0;
+  font-size: 28rpx;
+  color: #999;
+}

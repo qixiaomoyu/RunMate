@@ -23,6 +23,10 @@ def generate_plan():
     level = data.get("level", "新手")
     days = data.get("days", "3天")
     injury = data.get("injury", "无")
+    gender = data.get("gender", "男")
+    height = data.get("height", "170cm")
+    weight = data.get("weight", "65kg")
+    habit = data.get("habit", "几乎不运动")
     week = data.get("week", 1)  # 第几周，默认第1周
 
     # 根据周数给AI不同的指导
@@ -42,6 +46,10 @@ def generate_plan():
 - 当前水平：{level}
 - 每周可训练天数：{days}
 - 伤病情况：{injury}
+- 性别：{gender}
+- 身高：{height}
+- 体重：{weight}
+- 运动习惯：{habit}
 
 请生成8周训练计划中【第{week}周】的训练安排。{week_hint}
 
